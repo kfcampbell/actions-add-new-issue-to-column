@@ -8,10 +8,11 @@ async function run() {
     const columnName = core.getInput("column-name");
     const octokit = new github.GitHub(myToken);
     const payload = github.context.payload;
+    console.log(`<<< Payload contents: ${JSON.stringify(payload)}`);
     const contentType = payload.issue !== undefined ? "Issue" : "PullRequest";
-    const contentId = contentType === "Issue" ? 
+    const contentId = contentType === "Issue" ?
         payload.issue.id : payload.pull_request.id;
-    const contentNumber = contentType === "Issue" ? 
+    const contentNumber = contentType === "Issue" ?
         payload.issue.number : payload.pull_request.number;
 
     console.log(`Action triggered by ${contentType} #${contentNumber}`);
@@ -178,7 +179,7 @@ async function getRepoInformation(repositoryOwner, repositoryName, projectNumber
                             }
                         }
                     }
-                }        
+                }
             }`, {
             ownerVariable: repositoryOwner,
             nameVariable: repositoryName,
@@ -193,8 +194,8 @@ async function getRepoInformation(repositoryOwner, repositoryName, projectNumber
 run()
     .then(
         (response) => { console.log(`Finished running: ${response}`); },
-        (error) => { 
+        (error) => {
             console.log(`#ERROR# ${error}`);
-            process.exit(1); 
+            process.exit(1);
         }
     );
